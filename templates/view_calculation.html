@@ -148,6 +148,7 @@
 
 
 {% block scripts %}
+<script src="{{ url_for('static', path='/js/validations.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   // Check auth token
@@ -197,23 +198,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   function createCalculationVisual(type, inputs, result) {
     const visualDiv = document.getElementById('calculationVisual');
     
-    let operator;
-    switch (type) {
-      case 'addition':
-        operator = '+';
-        break;
-      case 'subtraction':
-        operator = '-';
-        break;
-      case 'multiplication':
-        operator = '×';
-        break;
-      case 'division':
-        operator = '÷';
-        break;
-      default:
-        operator = '?';
-    }
+    const operator = getOperatorSymbol(type);
+    const formattedResult = formatNumber(result);
     
     const html = `
       <div class="text-center">
@@ -226,7 +212,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
           `).join('')}
           <div class="w-full border-t border-gray-300 my-2"></div>
-          <div class="text-2xl font-bold text-blue-700">${result}</div>
+          <div class="text-2xl font-bold text-blue-700">${formattedResult}</div>
         </div>
       </div>
     `;

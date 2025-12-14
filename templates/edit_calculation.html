@@ -215,6 +215,7 @@
 
 
 {% block scripts %}
+<script src="{{ url_for('static', path='/js/validations.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   // Retrieve token
@@ -423,44 +424,44 @@ document.addEventListener('DOMContentLoaded', async () => {
     const submitButton = e.target.querySelector('button[type="submit"]');
     const originalButtonContent = submitButton.innerHTML;
     
-    // Parse input string into an array of floats
-    const newInputs = calcInputsInput.value
-      .split(',')
-      .map(num => parseFloat(num.trim()))
-      .filter(num => !isNaN(num));
-
+    // Get input values
+    const operationType = calcTypeInput.value;
+    const inputsString = calcInputsInput.value;
+    
     // Validate inputs
-    if (newInputs.length < 2) {
-      showError('Please enter at least two valid numbers separated by commas.');
+    const validationResult = validateCalculationInputs(operationType, inputsString);
+    
+    if (!validationResult.isValid) {
+      // Show error message
+      showError(validationResult.errors.join('\n'));
       
-      // Add error class to the input
-      calcInputsInput.classList.add('border-red-500', 'bg-red-50');
-      document.getElementById('inputHelp').classList.add('text-red-500');
-      document.getElementById('inputHelp').textContent = 'At least two valid numbers are required.';
+      // Highlight the input field
+      setInputFieldStatus(calcInputsInput, 'invalid');
+      
+      // Update help text with specific errors
+      const errorHTML = createValidationMessageHTML(validationResult.errors, validationResult.warnings);
+      document.getElementById('inputHelp').innerHTML = '<p class="text-sm text-red-600 font-medium mb-2">Validation Errors:</p>' + errorHTML;
+      document.getElementById('inputHelp').classList.add('text-red-600');
       
       // Focus the input
       calcInputsInput.focus();
       
-      // Remove error styling after a delay or on input
+      // Remove error state after a delay or on input
+      const removeError = () => {
+        setInputFieldStatus(calcInputsInput);
+        document.getElementById('inputHelp').classList.remove('text-red-600');
+        document.getElementById('inputHelp').innerHTML = 'Enter two or more numbers separated by commas.';
+        calcInputsInput.removeEventListener('input', removeError);
+      };
+      
       setTimeout(() => {
-        calcInputsInput.classList.remove('border-red-500', 'bg-red-50');
-        document.getElementById('inputHelp').classList.remove('text-red-500');
-        document.getElementById('inputHelp').textContent = 'Enter two or more numbers separated by commas.';
+        if (calcInputsInput.value.trim() !== '') {
+          removeError();
+        }
       }, 3000);
       
-      calcInputsInput.addEventListener('input', function removeErrorOnce() {
-        calcInputsInput.classList.remove('border-red-500', 'bg-red-50');
-        document.getElementById('inputHelp').classList.remove('text-red-500');
-        document.getElementById('inputHelp').textContent = 'Enter two or more numbers separated by commas.';
-        calcInputsInput.removeEventListener('input', removeErrorOnce);
-      });
+      calcInputsInput.addEventListener('input', removeError);
       
-      return;
-    }
-    
-    // Check for division by zero
-    if (calcTypeInput.value === 'division' && newInputs.some((value, index) => index > 0 && value === 0)) {
-      showError('Division by zero is not allowed.');
       return;
     }
 
@@ -475,7 +476,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ inputs: newInputs })
+        body: JSON.stringify({ inputs: validationResult.data.inputs })
       });
 
       if (!response.ok) {
@@ -495,12 +496,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Get the updated calculation
       const updatedCalc = await response.json();
 
-      // Use toast notification if available in layout
-      if (typeof window.showToast === 'function') {
-        window.showToast('Calculation updated successfully!', 'success');
-      } else {
-        showSuccess('Calculation updated successfully!');
-      }
+      // Show success message
+      showSuccess(`Calculation updated successfully! New result: ${formatNumber(updatedCalc.result)}`);
       
       // Update the preview with new data
       updatePreview();
