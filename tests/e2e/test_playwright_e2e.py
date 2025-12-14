@@ -7,7 +7,7 @@ Comprehensive end-to-end tests covering:
 """
 
 import pytest
-from playwright.sync_api import Page, Browser, expect
+from playwright.sync_api import Page, expect
 from typing import Dict
 
 
@@ -16,14 +16,8 @@ from typing import Dict
 # ============================================================================
 
 @pytest.fixture
-def base_url() -> str:
-    """Get the application base URL"""
-    return "http://127.0.0.1:8001"
-
-
-@pytest.fixture
-def test_user() -> Dict[str, str]:
-    """Test user credentials"""
+def test_user_e2e() -> Dict[str, str]:
+    """Test user credentials for E2E tests"""
     return {
         "username": "testuser_e2e",
         "email": "testuser_e2e@example.com",
@@ -33,14 +27,6 @@ def test_user() -> Dict[str, str]:
     }
 
 
-@pytest.fixture
-def page(browser: Browser) -> Page:
-    """Create a new page for each test"""
-    page = browser.new_page()
-    yield page
-    page.close()
-
-
 # ============================================================================
 # POSITIVE SCENARIOS - Happy Path
 # ============================================================================
@@ -48,55 +34,64 @@ def page(browser: Browser) -> Page:
 class TestPositiveScenarios:
     """Tests for successful user workflows"""
 
-    def test_user_registration_successful(self, page: Page, base_url: str, test_user: Dict):
+    def test_user_registration_successful(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test successful user registration"""
-        page.goto(f"{base_url}/register")
+        url = fastapi_server.rstrip('/') + '/register'
+        page.goto(url)
         
         # Fill registration form
-        page.fill('input[name="first_name"]', test_user["first_name"])
-        page.fill('input[name="last_name"]', test_user["last_name"])
-        page.fill('input[name="email"]', test_user["email"])
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
-        page.fill('input[name="confirm_password"]', test_user["password"])
+        page.fill('input[name="first_name"]', test_user_e2e["first_name"])
+        page.fill('input[name="last_name"]', test_user_e2e["last_name"])
+        page.fill('input[name="email"]', test_user_e2e["email"])
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
+        page.fill('input[name="confirm_password"]', test_user_e2e["password"])
         
         # Submit form
         page.click('button[type="submit"]')
         
         # Wait for redirect to login
-        page.wait_for_url(f"{base_url}/login", timeout=5000)
-        assert page.url == f"{base_url}/login"
+        expected_url = fastapi_server.rstrip('/') + '/login'
+        page.wait_for_url(expected_url, timeout=5000)
+        assert page.url == expected_url
 
-    def test_user_login_successful(self, page: Page, base_url: str, test_user: Dict):
+    def test_user_login_successful(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test successful user login"""
         # Register first
-        page.goto(f"{base_url}/register")
-        page.fill('input[name="first_name"]', test_user["first_name"])
-        page.fill('input[name="last_name"]', test_user["last_name"])
-        page.fill('input[name="email"]', test_user["email"])
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
-        page.fill('input[name="confirm_password"]', test_user["password"])
+        register_url = fastapi_server.rstrip('/') + '/register'
+        page.goto(register_url)
+        page.fill('input[name="first_name"]', test_user_e2e["first_name"])
+        page.fill('input[name="last_name"]', test_user_e2e["last_name"])
+        page.fill('input[name="email"]', test_user_e2e["email"])
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
+        page.fill('input[name="confirm_password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/login", timeout=5000)
+        
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.wait_for_url(login_url, timeout=5000)
         
         # Login
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
         
         # Should redirect to dashboard
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
-        assert page.url == f"{base_url}/dashboard"
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
+        assert page.url == dashboard_url
 
-    def test_create_calculation_addition(self, page: Page, base_url: str, test_user: Dict):
+    def test_create_calculation_addition(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test creating an addition calculation"""
         # Login
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Create calculation
         page.select_option('#calcType', 'addition')
@@ -110,13 +105,16 @@ class TestPositiveScenarios:
         # Check that result is displayed
         expect(success_alert).to_contain_text('30')
 
-    def test_create_calculation_subtraction(self, page: Page, base_url: str, test_user: Dict):
+    def test_create_calculation_subtraction(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test creating a subtraction calculation"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         page.select_option('#calcType', 'subtraction')
         page.fill('#calcInputs', '100, 30, 10')
@@ -126,13 +124,16 @@ class TestPositiveScenarios:
         expect(success_alert).to_be_visible(timeout=5000)
         expect(success_alert).to_contain_text('60')
 
-    def test_create_calculation_multiplication(self, page: Page, base_url: str, test_user: Dict):
+    def test_create_calculation_multiplication(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test creating a multiplication calculation"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         page.select_option('#calcType', 'multiplication')
         page.fill('#calcInputs', '2, 3, 4')
@@ -142,13 +143,16 @@ class TestPositiveScenarios:
         expect(success_alert).to_be_visible(timeout=5000)
         expect(success_alert).to_contain_text('24')
 
-    def test_create_calculation_division(self, page: Page, base_url: str, test_user: Dict):
+    def test_create_calculation_division(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test creating a division calculation"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         page.select_option('#calcType', 'division')
         page.fill('#calcInputs', '100, 2, 5')
@@ -158,13 +162,16 @@ class TestPositiveScenarios:
         expect(success_alert).to_be_visible(timeout=5000)
         expect(success_alert).to_contain_text('10')
 
-    def test_browse_calculations(self, page: Page, base_url: str, test_user: Dict):
+    def test_browse_calculations(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test browsing all calculations on dashboard"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Create a calculation
         page.select_option('#calcType', 'addition')
@@ -176,13 +183,16 @@ class TestPositiveScenarios:
         table_rows = page.locator('table tbody tr')
         assert table_rows.count() > 0
 
-    def test_view_calculation_details(self, page: Page, base_url: str, test_user: Dict):
+    def test_view_calculation_details(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test viewing calculation details"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Create calculation
         page.select_option('#calcType', 'addition')
@@ -194,16 +204,19 @@ class TestPositiveScenarios:
         page.click('a:has-text("View")', timeout=5000)
         
         # Should be on view page
-        page.wait_for_url(f"{base_url}/dashboard/view/**", timeout=5000)
+        page.wait_for_url('**/dashboard/view/**', timeout=5000)
         assert '/dashboard/view/' in page.url
 
-    def test_edit_calculation(self, page: Page, base_url: str, test_user: Dict):
+    def test_edit_calculation(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test editing a calculation"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Create calculation
         page.select_option('#calcType', 'addition')
@@ -213,7 +226,7 @@ class TestPositiveScenarios:
         
         # Click Edit button
         page.click('a:has-text("Edit")', timeout=5000)
-        page.wait_for_url(f"{base_url}/dashboard/edit/**", timeout=5000)
+        page.wait_for_url('**/dashboard/edit/**', timeout=5000)
         
         # Update inputs
         page.fill('#calcInputs', '5, 10, 20')
@@ -222,13 +235,16 @@ class TestPositiveScenarios:
         # Check for success
         page.wait_for_selector('#successAlert', timeout=5000)
 
-    def test_delete_calculation(self, page: Page, base_url: str, test_user: Dict):
+    def test_delete_calculation(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test deleting a calculation"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Create calculation
         page.select_option('#calcType', 'addition')
@@ -252,13 +268,16 @@ class TestPositiveScenarios:
         final_rows = page.locator('table tbody tr').count()
         assert final_rows < initial_rows
 
-    def test_logout(self, page: Page, base_url: str, test_user: Dict):
+    def test_logout(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test user logout"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Click logout button
         logout_btn = page.locator('#layoutLogoutBtn')
@@ -268,8 +287,9 @@ class TestPositiveScenarios:
         page.on("dialog", lambda dialog: dialog.accept())
         
         # Should redirect to login
-        page.wait_for_url(f"{base_url}/login", timeout=5000)
-        assert page.url == f"{base_url}/login"
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.wait_for_url(login_url, timeout=5000)
+        assert page.url == login_url
 
 
 # ============================================================================
@@ -279,9 +299,10 @@ class TestPositiveScenarios:
 class TestNegativeScenarios:
     """Tests for error handling and edge cases"""
 
-    def test_registration_missing_email(self, page: Page, base_url: str):
+    def test_registration_missing_email(self, page: Page, fastapi_server: str):
         """Test registration fails when email is missing"""
-        page.goto(f"{base_url}/register")
+        register_url = fastapi_server.rstrip('/') + '/register'
+        page.goto(register_url)
         
         page.fill('input[name="first_name"]', 'John')
         page.fill('input[name="last_name"]', 'Doe')
@@ -296,9 +317,10 @@ class TestNegativeScenarios:
         page.wait_for_timeout(1000)
         assert '/register' in page.url
 
-    def test_registration_password_mismatch(self, page: Page, base_url: str):
+    def test_registration_password_mismatch(self, page: Page, fastapi_server: str):
         """Test registration fails when passwords don't match"""
-        page.goto(f"{base_url}/register")
+        register_url = fastapi_server.rstrip('/') + '/register'
+        page.goto(register_url)
         
         page.fill('input[name="first_name"]', 'John')
         page.fill('input[name="last_name"]', 'Doe')
@@ -313,9 +335,10 @@ class TestNegativeScenarios:
         page.wait_for_timeout(1000)
         assert '/register' in page.url or '/login' not in page.url
 
-    def test_login_invalid_credentials(self, page: Page, base_url: str):
+    def test_login_invalid_credentials(self, page: Page, fastapi_server: str):
         """Test login fails with invalid credentials"""
-        page.goto(f"{base_url}/login")
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
         
         page.fill('input[name="username"]', 'nonexistent_user')
         page.fill('input[name="password"]', 'WrongPassword123!')
@@ -325,13 +348,16 @@ class TestNegativeScenarios:
         error_alert = page.locator('#errorAlert')
         expect(error_alert).to_be_visible(timeout=5000)
 
-    def test_create_calculation_empty_inputs(self, page: Page, base_url: str, test_user: Dict):
+    def test_create_calculation_empty_inputs(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test creating calculation with empty inputs"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Try to submit with empty inputs
         page.click('button:has-text("Calculate")')
@@ -340,13 +366,16 @@ class TestNegativeScenarios:
         error_alert = page.locator('#errorAlert')
         expect(error_alert).to_be_visible(timeout=5000)
 
-    def test_create_calculation_single_number(self, page: Page, base_url: str, test_user: Dict):
+    def test_create_calculation_single_number(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test creating calculation with only one number"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Enter only one number
         page.select_option('#calcType', 'addition')
@@ -357,13 +386,16 @@ class TestNegativeScenarios:
         error_alert = page.locator('#errorAlert')
         expect(error_alert).to_be_visible(timeout=5000)
 
-    def test_create_calculation_invalid_numbers(self, page: Page, base_url: str, test_user: Dict):
+    def test_create_calculation_invalid_numbers(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test creating calculation with non-numeric inputs"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Enter invalid numbers
         page.select_option('#calcType', 'addition')
@@ -374,13 +406,16 @@ class TestNegativeScenarios:
         error_alert = page.locator('#errorAlert')
         expect(error_alert).to_be_visible(timeout=5000)
 
-    def test_division_by_zero(self, page: Page, base_url: str, test_user: Dict):
+    def test_division_by_zero(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test division by zero error"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Try division by zero
         page.select_option('#calcType', 'division')
@@ -392,38 +427,47 @@ class TestNegativeScenarios:
         expect(error_alert).to_be_visible(timeout=5000)
         expect(error_alert).to_contain_text('zero')
 
-    def test_unauthorized_access_no_token(self, page: Page, base_url: str):
+    def test_unauthorized_access_no_token(self, page: Page, fastapi_server: str):
         """Test accessing dashboard without authentication"""
         # Try to access dashboard directly
-        page.goto(f"{base_url}/dashboard")
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.goto(dashboard_url)
         
         # Should redirect to login
-        page.wait_for_url(f"{base_url}/login", timeout=5000)
-        assert page.url == f"{base_url}/login"
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.wait_for_url(login_url, timeout=5000)
+        assert page.url == login_url
 
-    def test_view_nonexistent_calculation(self, page: Page, base_url: str, test_user: Dict):
+    def test_view_nonexistent_calculation(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test viewing a calculation that doesn't exist"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Try to access non-existent calculation
         fake_id = "00000000-0000-0000-0000-000000000000"
-        page.goto(f"{base_url}/dashboard/view/{fake_id}")
+        view_url = fastapi_server.rstrip('/') + f'/dashboard/view/{fake_id}'
+        page.goto(view_url)
         
         # Should show error state
         error_state = page.locator('#errorState')
         expect(error_state).to_be_visible(timeout=5000)
 
-    def test_edit_calculation_division_by_zero(self, page: Page, base_url: str, test_user: Dict):
+    def test_edit_calculation_division_by_zero(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test editing calculation to cause division by zero"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Create valid division
         page.select_option('#calcType', 'division')
@@ -433,7 +477,7 @@ class TestNegativeScenarios:
         
         # Edit to division by zero
         page.click('a:has-text("Edit")')
-        page.wait_for_url(f"{base_url}/dashboard/edit/**", timeout=5000)
+        page.wait_for_url('**/dashboard/edit/**', timeout=5000)
         page.fill('#calcInputs', '100, 0')
         page.click('button:has-text("Save Changes")')
         
@@ -441,13 +485,16 @@ class TestNegativeScenarios:
         error_alert = page.locator('#errorAlert')
         expect(error_alert).to_be_visible(timeout=5000)
 
-    def test_rapid_form_submission(self, page: Page, base_url: str, test_user: Dict):
+    def test_rapid_form_submission(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test that rapid form submission is prevented"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Try to submit form multiple times rapidly
         page.select_option('#calcType', 'addition')
@@ -459,13 +506,16 @@ class TestNegativeScenarios:
         # Button should be disabled
         expect(submit_btn).to_be_disabled(timeout=1000)
 
-    def test_mixed_valid_invalid_input(self, page: Page, base_url: str, test_user: Dict):
+    def test_mixed_valid_invalid_input(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test form with mixed valid and invalid input"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Enter mixed valid/invalid
         page.select_option('#calcType', 'addition')
@@ -485,13 +535,16 @@ class TestNegativeScenarios:
 class TestEdgeCases:
     """Tests for edge cases and special scenarios"""
 
-    def test_calculation_with_decimal_numbers(self, page: Page, base_url: str, test_user: Dict):
+    def test_calculation_with_decimal_numbers(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test calculation with decimal numbers"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         page.select_option('#calcType', 'addition')
         page.fill('#calcInputs', '3.14, 2.71, 1.41')
@@ -500,13 +553,16 @@ class TestEdgeCases:
         success_alert = page.locator('#successAlert')
         expect(success_alert).to_be_visible(timeout=5000)
 
-    def test_calculation_with_negative_numbers(self, page: Page, base_url: str, test_user: Dict):
+    def test_calculation_with_negative_numbers(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test calculation with negative numbers"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         page.select_option('#calcType', 'addition')
         page.fill('#calcInputs', '-5, 10, -15')
@@ -515,13 +571,16 @@ class TestEdgeCases:
         success_alert = page.locator('#successAlert')
         expect(success_alert).to_be_visible(timeout=5000)
 
-    def test_calculation_with_many_inputs(self, page: Page, base_url: str, test_user: Dict):
+    def test_calculation_with_many_inputs(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test calculation with many input numbers"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         page.select_option('#calcType', 'addition')
         page.fill('#calcInputs', '1, 2, 3, 4, 5, 6, 7, 8, 9, 10')
@@ -531,13 +590,16 @@ class TestEdgeCases:
         expect(success_alert).to_be_visible(timeout=5000)
         expect(success_alert).to_contain_text('55')
 
-    def test_real_time_validation_feedback(self, page: Page, base_url: str, test_user: Dict):
+    def test_real_time_validation_feedback(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test real-time validation feedback as user types"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         input_field = page.locator('#calcInputs')
         
@@ -553,13 +615,16 @@ class TestEdgeCases:
         valid_icon = page.locator('#validIcon')
         expect(valid_icon).to_be_visible(timeout=1000)
 
-    def test_live_preview_on_edit_page(self, page: Page, base_url: str, test_user: Dict):
+    def test_live_preview_on_edit_page(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test live preview updates on edit page"""
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Create calculation
         page.select_option('#calcType', 'addition')
@@ -569,7 +634,7 @@ class TestEdgeCases:
         
         # Go to edit page
         page.click('a:has-text("Edit")')
-        page.wait_for_url(f"{base_url}/dashboard/edit/**", timeout=5000)
+        page.wait_for_url('**/dashboard/edit/**', timeout=5000)
         
         # Change inputs and watch preview update
         preview = page.locator('#previewResult')
@@ -577,16 +642,19 @@ class TestEdgeCases:
         page.wait_for_timeout(500)
         expect(preview).to_contain_text('35')
 
-    def test_page_responsive_mobile_view(self, page: Page, base_url: str, test_user: Dict):
+    def test_page_responsive_mobile_view(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test page responsiveness on mobile view"""
         # Set mobile viewport
         page.set_viewport_size({"width": 375, "height": 667})
         
-        page.goto(f"{base_url}/login")
-        page.fill('input[name="username"]', test_user["username"])
-        page.fill('input[name="password"]', test_user["password"])
+        login_url = fastapi_server.rstrip('/') + '/login'
+        page.goto(login_url)
+        page.fill('input[name="username"]', test_user_e2e["username"])
+        page.fill('input[name="password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
-        page.wait_for_url(f"{base_url}/dashboard", timeout=5000)
+        
+        dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
+        page.wait_for_url(dashboard_url, timeout=5000)
         
         # Check that elements are visible on mobile
         form = page.locator('#calculationForm')
