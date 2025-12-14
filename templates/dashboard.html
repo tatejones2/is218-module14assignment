@@ -206,12 +206,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorAlert = document.getElementById('errorAlert');
     const errorMessage = document.getElementById('errorMessage');
     errorMessage.textContent = msg;
+    
+    // Ensure element is fully visible
     errorAlert.classList.remove('hidden');
+    errorAlert.classList.remove('opacity-0');
+    errorAlert.style.display = '';
+    
+    // Force a reflow to ensure the element is rendered
+    void errorAlert.offsetHeight;
     
     // Auto hide after 5 seconds
-    setTimeout(() => {
+    const hideTimer = setTimeout(() => {
       errorAlert.classList.add('opacity-0');
-      setTimeout(() => {
+      const hideCompleteTimer = setTimeout(() => {
         errorAlert.classList.add('hidden');
         errorAlert.classList.remove('opacity-0');
       }, 300);
@@ -225,12 +232,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const successAlert = document.getElementById('successAlert');
     const successMessage = document.getElementById('successMessage');
     successMessage.textContent = msg;
+    
+    // Ensure element is fully visible
     successAlert.classList.remove('hidden');
+    successAlert.classList.remove('opacity-0');
+    successAlert.style.display = '';
+    
+    // Force a reflow to ensure the element is rendered
+    void successAlert.offsetHeight;
     
     // Auto hide after 5 seconds
-    setTimeout(() => {
+    const hideTimer = setTimeout(() => {
       successAlert.classList.add('opacity-0');
-      setTimeout(() => {
+      const hideCompleteTimer = setTimeout(() => {
         successAlert.classList.add('hidden');
         successAlert.classList.remove('opacity-0');
       }, 300);
@@ -529,6 +543,11 @@ document.addEventListener('DOMContentLoaded', function() {
       // Empty state
       statusIcon.classList.add('hidden');
       setInputFieldStatus(this);
+      
+      // Remove clear button when input is empty
+      if (this.nextElementSibling && this.nextElementSibling.classList.contains('clear-button')) {
+        this.nextElementSibling.remove();
+      }
       return;
     }
     
@@ -554,21 +573,9 @@ document.addEventListener('DOMContentLoaded', function() {
       setInputFieldStatus(this, 'valid');
       validIcon.classList.remove('hidden');
     }
-  });
-
-  // Initial load
-  loadCalculations();
-  
-  // Optional features:
-  
-  // 1. Auto-refresh every 30 seconds
-  // const refreshInterval = setInterval(loadCalculations, 30000);
-  
-  // 2. Add clear form button
-  const calcInputs = document.getElementById('calcInputs');
-  calcInputs.addEventListener('input', function() {
+    
+    // Show clear button when there's input
     if (this.value.trim() !== '') {
-      // Show clear button when there's input
       if (!this.nextElementSibling || !this.nextElementSibling.classList.contains('clear-button')) {
         const clearButton = document.createElement('button');
         clearButton.type = 'button';
@@ -578,17 +585,19 @@ document.addEventListener('DOMContentLoaded', function() {
           this.value = '';
           this.focus();
           clearButton.remove();
+          // Trigger validation reset
+          this.dispatchEvent(new Event('input'));
         });
         
         // Make sure the input's parent is position relative
         this.parentElement.style.position = 'relative';
         this.parentElement.appendChild(clearButton);
       }
-    } else if (this.nextElementSibling && this.nextElementSibling.classList.contains('clear-button')) {
-      // Remove clear button when input is empty
-      this.nextElementSibling.remove();
     }
   });
+
+  // Initial load
+  loadCalculations();
 });
 </script>
 {% endblock %}
