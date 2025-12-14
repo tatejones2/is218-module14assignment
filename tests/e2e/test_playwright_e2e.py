@@ -552,29 +552,49 @@ class TestNegativeScenarios:
         page.wait_for_url(dashboard_url, timeout=5000)
         
         # Create valid division
+        page.wait_for_selector('#calcType', timeout=5000)
         page.select_option('#calcType', 'division')
         page.fill('#calcInputs', '100, 2')
         page.click('button:has-text("Calculate")')
         page.wait_for_selector('#successAlert', timeout=5000)
         
+        # Verify we can see edit links (calculation was created)
+        page.wait_for_selector('a:has-text("Edit")', timeout=5000)
+        
         # Edit to division by zero
         page.click('a:has-text("Edit")')
         page.wait_for_url('**/dashboard/edit/**', timeout=5000)
-        page.fill('#calcInputs', '100, 0')
-        page.click('button:has-text("Save Changes")')
         
-        # Wait for the error to appear (validation runs immediately)
-        # The validation catches division by zero before API call
+        # Ensure form is ready before filling
+        page.wait_for_selector('#editCalculationForm', timeout=5000)
         page.wait_for_timeout(500)
         
-        # Check error alert is visible by checking it doesn't have hidden class
-        # Use a wait function to ensure the error is displayed
+        # Verify inputs are loaded before modifying
+        inputs_field = page.locator('#calcInputs')
+        inputs_field.clear()
+        inputs_field.fill('100, 0')
+        
+        # Trigger input event to ensure validation runs
+        page.evaluate("document.getElementById('calcInputs').dispatchEvent(new Event('input', { bubbles: true }))")
+        
+        # Click save button
+        page.click('button:has-text("Save Changes")')
+        
+        # Wait for the error to appear (validation runs immediately on submit)
         try:
-            page.wait_for_function("() => !document.getElementById('errorAlert').classList.contains('hidden')", timeout=5000)
+            page.wait_for_function(
+                "() => !document.getElementById('errorAlert').classList.contains('hidden')",
+                timeout=5000
+            )
         except Exception as e:
-            # If the function times out, check the error message
+            # If the function times out, check the error message and page state
             error_classes = page.evaluate("() => document.getElementById('errorAlert').className")
-            raise AssertionError(f"Error alert should be visible but has classes: {error_classes}") from e
+            error_msg = page.evaluate("() => document.getElementById('errorMessage').textContent")
+            # Print page URL for debugging
+            current_url = page.url
+            raise AssertionError(
+                f"Error alert should be visible on {current_url}. Classes: {error_classes}, Message: '{error_msg}'"
+            ) from e
 
     def test_rapid_form_submission(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test that rapid form submission is prevented"""
@@ -725,30 +745,55 @@ class TestEdgeCases:
         page.wait_for_url(dashboard_url, timeout=5000)
         
         # Create calculation
+        page.wait_for_selector('#calcType', timeout=5000)
         page.select_option('#calcType', 'addition')
         page.fill('#calcInputs', '5, 10')
         page.click('button:has-text("Calculate")')
         page.wait_for_selector('#successAlert', timeout=5000)
         
+        # Verify we can see edit links (calculation was created)
+        page.wait_for_selector('a:has-text("Edit")', timeout=5000)
+        
         # Go to edit page
         page.click('a:has-text("Edit")')
         page.wait_for_url('**/dashboard/edit/**', timeout=5000)
         
-        # Change inputs and watch preview update
+        # Ensure form is loaded completely
+        page.wait_for_selector('#editCalculationForm', timeout=5000)
+        page.wait_for_timeout(500)
+        
+        # Change inputs using clear then fill
+        inputs_field = page.locator('#calcInputs')
+        inputs_field.clear()
+        inputs_field.fill('5, 10, 20')
+        
+        # Manually trigger the input event
+        page.evaluate("""
+          const field = document.getElementById('calcInputs');
+          field.value = '5, 10, 20';
+          field.dispatchEvent(new Event('input', { bubbles: true }));
+          field.dispatchEvent(new Event('change', { bubbles: true }));
+        """)
+        
+        # Wait for preview to update
         preview = page.locator('#previewResult')
-        page.fill('#calcInputs', '5, 10, 20')
         
-        # Wait for the preview to update with live preview (it's triggered on input event)
-        page.wait_for_timeout(1500)
-        
-        # Get preview text for debugging if needed
-        preview_text = preview.inner_text()
-        
-        # Check preview contains the result "35"
+        # Wait for preview text to update (not just appear)
         try:
-            expect(preview).to_contain_text('35', timeout=5000)
-        except AssertionError:
-            raise AssertionError(f"Preview should contain '35' but contains: {preview_text}")
+            page.wait_for_function(
+                "() => document.getElementById('previewResult').innerText.includes('35')",
+                timeout=5000
+            )
+        except Exception:
+            # If it times out, get the actual preview content for debugging
+            preview_text = preview.inner_text()
+            current_url = page.url
+            raise AssertionError(
+                f"Preview should contain '35' on {current_url} but contains: '{preview_text}'"
+            )
+        
+        # Final verification
+        expect(preview).to_contain_text('35', timeout=1000)
 
     def test_page_responsive_mobile_view(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test page responsiveness on mobile view"""
