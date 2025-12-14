@@ -36,6 +36,10 @@ class TestPositiveScenarios:
 
     def test_user_registration_successful(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test successful user registration"""
+        # Capture console logs
+        console_messages = []
+        page.on("console", lambda msg: console_messages.append(f"{msg.type}: {msg.text}"))
+        
         url = fastapi_server.rstrip('/') + '/register'
         page.goto(url)
         
@@ -50,9 +54,27 @@ class TestPositiveScenarios:
         # Submit form
         page.click('button[type="submit"]')
         
+        # Wait a bit for response
+        page.wait_for_timeout(2000)
+        
+        # Check for error alert
+        error_alert = page.locator('#errorAlert')
+        if error_alert.is_visible():
+            error_msg = page.locator('#errorMessage').text_content()
+            print(f"Registration error: {error_msg}")
+            print(f"Console messages: {console_messages}")
+        
         # Wait for redirect to login
         expected_url = fastapi_server.rstrip('/') + '/login'
-        page.wait_for_url(expected_url, timeout=5000)
+        try:
+            page.wait_for_url(expected_url, timeout=5000)
+        except Exception as e:
+            print(f"Navigation error: {e}")
+            print(f"Current URL: {page.url}")
+            print(f"Console messages: {console_messages}")
+            error_msg = page.locator('#errorMessage').text_content() if error_alert.is_visible() else "No error visible"
+            print(f"Error message: {error_msg}")
+            raise
         assert page.url == expected_url
 
     def test_user_login_successful(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
