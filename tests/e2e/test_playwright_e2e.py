@@ -326,18 +326,21 @@ class TestPositiveScenarios:
         # Click Delete button
         page.click('button:has-text("Delete")')
         
-        # Confirm deletion
-        page.on("dialog", lambda dialog: dialog.accept())
+        # Confirm deletion in dialog
+        page.once("dialog", lambda dialog: dialog.accept())
         
-        # Wait for deletion to complete
-        page.wait_for_timeout(2000)
+        # Wait longer for deletion and table reload to complete
+        page.wait_for_timeout(3000)
         
         # Check that row count decreased
         final_rows = page.locator('table tbody tr').count()
-        assert final_rows < initial_rows
+        assert final_rows < initial_rows, f"Expected row count to decrease from {initial_rows} but got {final_rows}"
 
     def test_logout(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test user logout"""
+        # Ensure user is registered
+        ensure_user_registered(page, fastapi_server, test_user_e2e)
+        
         login_url = fastapi_server.rstrip('/') + '/login'
         page.goto(login_url)
         page.fill('input[name="username"]', test_user_e2e["username"])
@@ -347,12 +350,12 @@ class TestPositiveScenarios:
         dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
         page.wait_for_url(dashboard_url, timeout=5000)
         
+        # Set up dialog handler BEFORE clicking logout
+        page.once("dialog", lambda dialog: dialog.accept())
+        
         # Click logout button
         logout_btn = page.locator('#layoutLogoutBtn')
         logout_btn.click()
-        
-        # Confirm logout
-        page.on("dialog", lambda dialog: dialog.accept())
         
         # Should redirect to login
         login_url = fastapi_server.rstrip('/') + '/login'
@@ -555,6 +558,9 @@ class TestNegativeScenarios:
 
     def test_rapid_form_submission(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test that rapid form submission is prevented"""
+        # Ensure user is registered
+        ensure_user_registered(page, fastapi_server, test_user_e2e)
+        
         login_url = fastapi_server.rstrip('/') + '/login'
         page.goto(login_url)
         page.fill('input[name="username"]', test_user_e2e["username"])
@@ -564,14 +570,14 @@ class TestNegativeScenarios:
         dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
         page.wait_for_url(dashboard_url, timeout=5000)
         
-        # Try to submit form multiple times rapidly
+        # Try to submit form 
         page.select_option('#calcType', 'addition')
         page.fill('#calcInputs', '5, 10')
         
         submit_btn = page.locator('button:has-text("Calculate")')
         submit_btn.click()
         
-        # Button should be disabled
+        # Button should be disabled immediately after click
         expect(submit_btn).to_be_disabled(timeout=1000)
 
     def test_mixed_valid_invalid_input(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
