@@ -15,6 +15,29 @@ from typing import Dict
 # Fixtures
 # ============================================================================
 
+def ensure_user_registered(page: Page, fastapi_server: str, test_user: Dict) -> None:
+    """Ensure a test user is registered by attempting registration.
+    If user already exists, error is handled gracefully."""
+    register_url = fastapi_server.rstrip('/') + '/register'
+    page.goto(register_url)
+    page.fill('input[name="first_name"]', test_user["first_name"])
+    page.fill('input[name="last_name"]', test_user["last_name"])
+    page.fill('input[name="email"]', test_user["email"])
+    page.fill('input[name="username"]', test_user["username"])
+    page.fill('input[name="password"]', test_user["password"])
+    page.fill('input[name="confirm_password"]', test_user["password"])
+    page.click('button[type="submit"]')
+    
+    # Wait for response
+    page.wait_for_timeout(2000)
+    
+    # Check for error - only raise if it's not a duplicate error
+    error_alert = page.locator('#errorAlert')
+    if error_alert.is_visible():
+        error_msg = page.locator('#errorMessage').text_content()
+        if "already exists" not in error_msg and "already registered" not in error_msg:
+            raise AssertionError(f"Failed to register user: {error_msg}")
+
 @pytest.fixture
 def test_user_e2e() -> Dict[str, str]:
     """Test user credentials for E2E tests"""
@@ -279,6 +302,9 @@ class TestPositiveScenarios:
 
     def test_delete_calculation(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test deleting a calculation"""
+        # Ensure user is registered
+        ensure_user_registered(page, fastapi_server, test_user_e2e)
+        
         login_url = fastapi_server.rstrip('/') + '/login'
         page.goto(login_url)
         page.fill('input[name="username"]', test_user_e2e["username"])
