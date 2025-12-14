@@ -330,9 +330,10 @@ class TestPositiveScenarios:
         # Set up dialog handler before clicking delete
         page.on("dialog", lambda dialog: dialog.accept())
         
-        # Click first Delete button
-        first_delete_btn = page.locator('button:has-text("Delete")').first
-        first_delete_btn.click()
+        # Click LAST Delete button (most recent calculation, added by this test)
+        delete_btns = page.locator('button:has-text("Delete")')
+        assert delete_btns.count() > 0, "No delete buttons found"
+        delete_btns.last.click()
         
         # Wait for the success alert to appear (indicates deletion completed)
         page.wait_for_selector('#successAlert', timeout=5000)
@@ -561,8 +562,10 @@ class TestNegativeScenarios:
         # Verify we can see edit links (calculation was created)
         page.wait_for_selector('a:has-text("Edit")', timeout=5000)
         
-        # Edit to division by zero
-        page.click('a:has-text("Edit")')
+        # Click LAST Edit button (most recent calculation, added by this test)
+        edit_links = page.locator('a:has-text("Edit")')
+        assert edit_links.count() > 0, "No edit links found"
+        edit_links.last.click()
         page.wait_for_url('**/dashboard/edit/**', timeout=5000)
         
         # Ensure form is ready before filling
@@ -581,20 +584,8 @@ class TestNegativeScenarios:
         page.click('button:has-text("Save Changes")')
         
         # Wait for the error to appear (validation runs immediately on submit)
-        try:
-            page.wait_for_function(
-                "() => !document.getElementById('errorAlert').classList.contains('hidden')",
-                timeout=5000
-            )
-        except Exception as e:
-            # If the function times out, check the error message and page state
-            error_classes = page.evaluate("() => document.getElementById('errorAlert').className")
-            error_msg = page.evaluate("() => document.getElementById('errorMessage').textContent")
-            # Print page URL for debugging
-            current_url = page.url
-            raise AssertionError(
-                f"Error alert should be visible on {current_url}. Classes: {error_classes}, Message: '{error_msg}'"
-            ) from e
+        error_alert = page.locator('#errorAlert')
+        expect(error_alert).to_be_visible(timeout=5000)
 
     def test_rapid_form_submission(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test that rapid form submission is prevented"""
@@ -754,8 +745,10 @@ class TestEdgeCases:
         # Verify we can see edit links (calculation was created)
         page.wait_for_selector('a:has-text("Edit")', timeout=5000)
         
-        # Go to edit page
-        page.click('a:has-text("Edit")')
+        # Click LAST Edit button (most recent calculation, added by this test)
+        edit_links = page.locator('a:has-text("Edit")')
+        assert edit_links.count() > 0, "No edit links found"
+        edit_links.last.click()
         page.wait_for_url('**/dashboard/edit/**', timeout=5000)
         
         # Ensure form is loaded completely
@@ -777,23 +770,7 @@ class TestEdgeCases:
         
         # Wait for preview to update
         preview = page.locator('#previewResult')
-        
-        # Wait for preview text to update (not just appear)
-        try:
-            page.wait_for_function(
-                "() => document.getElementById('previewResult').innerText.includes('35')",
-                timeout=5000
-            )
-        except Exception:
-            # If it times out, get the actual preview content for debugging
-            preview_text = preview.inner_text()
-            current_url = page.url
-            raise AssertionError(
-                f"Preview should contain '35' on {current_url} but contains: '{preview_text}'"
-            )
-        
-        # Final verification
-        expect(preview).to_contain_text('35', timeout=1000)
+        expect(preview).to_contain_text('35', timeout=5000)
 
     def test_page_responsive_mobile_view(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test page responsiveness on mobile view"""
