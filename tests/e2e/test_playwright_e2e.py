@@ -314,34 +314,35 @@ class TestPositiveScenarios:
         dashboard_url = fastapi_server.rstrip('/') + '/dashboard'
         page.wait_for_url(dashboard_url, timeout=5000)
         
-        # Create two calculations to ensure we can track deletion
+        # Get initial row count (could be from previous tests)
+        initial_rows = page.locator('table tbody tr').count()
+        
+        # Create a calculation to ensure we have at least one to delete
         page.select_option('#calcType', 'addition')
         page.fill('#calcInputs', '5, 10')
         page.click('button:has-text("Calculate")')
         page.wait_for_selector('#successAlert', timeout=5000)
         
-        page.select_option('#calcType', 'subtraction')
-        page.fill('#calcInputs', '20, 5')
-        page.click('button:has-text("Calculate")')
-        page.wait_for_selector('#successAlert', timeout=5000)
+        # Get row count after creating one calculation
+        rows_after_create = page.locator('table tbody tr').count()
+        assert rows_after_create > initial_rows, f"Should have added a row: {initial_rows} -> {rows_after_create}"
         
-        # Get initial row count
-        initial_rows = page.locator('table tbody tr').count()
-        assert initial_rows >= 2, f"Should have at least 2 rows but got {initial_rows}"
-        
-        # Set up dialog handler for confirm()
-        page.once("dialog", lambda dialog: dialog.accept())
+        # Set up dialog handler before clicking delete
+        page.on("dialog", lambda dialog: dialog.accept())
         
         # Click first Delete button
         first_delete_btn = page.locator('button:has-text("Delete")').first
         first_delete_btn.click()
         
-        # Wait for the deletion to process and table to reload
-        page.wait_for_timeout(2000)
+        # Wait for the success alert to appear (indicates deletion completed)
+        page.wait_for_selector('#successAlert', timeout=5000)
+        
+        # Give time for table reload
+        page.wait_for_timeout(500)
         
         # Check that row count decreased
         final_rows = page.locator('table tbody tr').count()
-        assert final_rows < initial_rows, f"Expected row count to decrease from {initial_rows} but got {final_rows}"
+        assert final_rows < rows_after_create, f"Expected row count to decrease from {rows_after_create} but got {final_rows}"
 
     def test_logout(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test user logout"""
@@ -562,12 +563,18 @@ class TestNegativeScenarios:
         page.fill('#calcInputs', '100, 0')
         page.click('button:has-text("Save Changes")')
         
-        # Should show error - wait a bit for response
-        page.wait_for_timeout(2000)
+        # Wait for the error to appear (validation runs immediately)
+        # The validation catches division by zero before API call
+        page.wait_for_timeout(500)
         
-        # Check error alert is visible
-        error_alert = page.locator('#errorAlert')
-        expect(error_alert).to_be_visible(timeout=5000)
+        # Check error alert is visible by checking it doesn't have hidden class
+        # Use a wait function to ensure the error is displayed
+        try:
+            page.wait_for_function("() => !document.getElementById('errorAlert').classList.contains('hidden')", timeout=5000)
+        except Exception as e:
+            # If the function times out, check the error message
+            error_classes = page.evaluate("() => document.getElementById('errorAlert').className")
+            raise AssertionError(f"Error alert should be visible but has classes: {error_classes}") from e
 
     def test_rapid_form_submission(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test that rapid form submission is prevented"""
@@ -730,8 +737,18 @@ class TestEdgeCases:
         # Change inputs and watch preview update
         preview = page.locator('#previewResult')
         page.fill('#calcInputs', '5, 10, 20')
-        page.wait_for_timeout(500)
-        expect(preview).to_contain_text('35')
+        
+        # Wait for the preview to update with live preview (it's triggered on input event)
+        page.wait_for_timeout(1500)
+        
+        # Get preview text for debugging if needed
+        preview_text = preview.inner_text()
+        
+        # Check preview contains the result "35"
+        try:
+            expect(preview).to_contain_text('35', timeout=5000)
+        except AssertionError:
+            raise AssertionError(f"Preview should contain '35' but contains: {preview_text}")
 
     def test_page_responsive_mobile_view(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test page responsiveness on mobile view"""
