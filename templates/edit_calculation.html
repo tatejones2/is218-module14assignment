@@ -230,7 +230,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const errorAlert = document.getElementById('errorAlert');
     const errorMessage = document.getElementById('errorMessage');
     errorMessage.textContent = message;
+    
+    // Ensure element is fully visible
     errorAlert.classList.remove('hidden');
+    errorAlert.classList.remove('opacity-0');
+    errorAlert.style.display = '';
+    
+    // Force a reflow to ensure the element is rendered
+    void errorAlert.offsetHeight;
     
     // Smooth fade out
     setTimeout(() => {
@@ -249,7 +256,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const successAlert = document.getElementById('successAlert');
     const successMessage = document.getElementById('successMessage');
     successMessage.textContent = message;
+    
+    // Ensure element is fully visible
     successAlert.classList.remove('hidden');
+    successAlert.classList.remove('opacity-0');
+    successAlert.style.display = '';
+    
+    // Force a reflow to ensure the element is rendered
+    void successAlert.offsetHeight;
     
     // Smooth fade out
     setTimeout(() => {
