@@ -199,8 +199,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             showSuccess('Login successful! Redirecting...');
 
-            // Redirect to dashboard immediately
-            window.location.href = '/dashboard';
+            // Redirect to dashboard with small delay to ensure token is saved
+            setTimeout(() => {
+                window.location.href = '/dashboard';
+            }, 100);
 
         } catch (error) {
             showError(error.message || 'Invalid username or password');

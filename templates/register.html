@@ -258,8 +258,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show success message
             showSuccess('Registration successful! Redirecting to login...');
 
-            // Redirect to login page immediately
-            window.location.href = '/login';
+            // Redirect to login page with small delay
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 100);
 
         } catch (error) {
             showError(error.message || 'An error occurred during registration');
