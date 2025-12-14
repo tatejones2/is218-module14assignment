@@ -85,7 +85,7 @@ class TestPositiveScenarios:
 
     def test_user_login_successful(self, page: Page, fastapi_server: str, test_user_e2e: Dict):
         """Test successful user login"""
-        # Register first
+        # Register first (or handle if already exists)
         register_url = fastapi_server.rstrip('/') + '/register'
         page.goto(register_url)
         page.fill('input[name="first_name"]', test_user_e2e["first_name"])
@@ -96,8 +96,22 @@ class TestPositiveScenarios:
         page.fill('input[name="confirm_password"]', test_user_e2e["password"])
         page.click('button[type="submit"]')
         
-        login_url = fastapi_server.rstrip('/') + '/login'
-        page.wait_for_url(login_url, timeout=5000)
+        # Wait for response
+        page.wait_for_timeout(2000)
+        
+        # Check for error alert
+        error_alert = page.locator('#errorAlert')
+        if error_alert.is_visible():
+            error_msg = page.locator('#errorMessage').text_content()
+            # If it's a duplicate user error, that's OK - navigate to login
+            if "already exists" in error_msg or "already registered" in error_msg:
+                page.goto(fastapi_server.rstrip('/') + '/login')
+            else:
+                raise AssertionError(f"Unexpected registration error: {error_msg}")
+        else:
+            # Registration successful, wait for redirect to login
+            login_url = fastapi_server.rstrip('/') + '/login'
+            page.wait_for_url(login_url, timeout=5000)
         
         # Login
         page.fill('input[name="username"]', test_user_e2e["username"])
