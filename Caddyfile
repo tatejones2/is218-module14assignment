@@ -1,0 +1,46 @@
+{$DOMAIN} {
+    encode gzip
+    
+    # Proxy all requests to the FastAPI app
+    reverse_proxy web:8000 {
+        # Keep connections alive
+        header_up Connection "upgrade"
+        header_up Upgrade "websocket"
+        
+        # Pass original host
+        header_up X-Forwarded-Host {http.request.header.Host}
+        header_up X-Forwarded-Proto {http.request.proto}
+        header_up X-Forwarded-For {http.request.remote}
+    }
+    
+    # Security headers
+    header {
+        -Server
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        X-XSS-Protection "1; mode=block"
+    }
+    
+    # Compression
+    file_server {
+        precompressed gzip
+    }
+}
+
+pgadmin.{$DOMAIN} {
+    encode gzip
+    
+    # Proxy pgAdmin
+    reverse_proxy pgadmin:80 {
+        header_up X-Script-Name /pgadmin4
+    }
+    
+    # Security headers
+    header {
+        -Server
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+    }
+}
