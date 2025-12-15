@@ -182,7 +182,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.detail || 'Login failed');
+                // Handle both string and object error messages
+                let errorMessage = 'Login failed';
+                if (typeof data.detail === 'string') {
+                    errorMessage = data.detail;
+                } else if (typeof data.detail === 'object') {
+                    errorMessage = JSON.stringify(data.detail);
+                }
+                throw new Error(errorMessage);
             }
 
             // Store tokens and user data
