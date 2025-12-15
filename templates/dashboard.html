@@ -379,17 +379,16 @@ document.addEventListener('DOMContentLoaded', function() {
               throw new Error('Failed to delete calculation');
             }
             
-            // Show success immediately
-            showSuccess('Calculation deleted successfully');
-            
             // Fade out the row before removing it
             const row = e.target.closest('tr');
             row.style.transition = 'opacity 0.5s';
             row.style.opacity = '0';
             
-            // Reload the table after fade-out completes
+            // Wait for fade-out, then reload table BEFORE showing success
             setTimeout(async () => {
               await loadCalculations();
+              // Show success AFTER table is fully reloaded
+              showSuccess('Calculation deleted successfully');
             }, 500);
             
           } catch (err) {
