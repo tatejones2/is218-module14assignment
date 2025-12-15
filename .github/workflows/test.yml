@@ -99,7 +99,7 @@ jobs:
           
       - uses: docker/build-push-action@v5
         with:
-          push: false
+          push: true
           tags: |
             kaw393939/601_module9:latest
             kaw393939/601_module9:${{ github.sha }}
