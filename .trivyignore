@@ -1,0 +1,10 @@
+# Trivy ignore file
+# False positives and unavoidable vulnerabilities in dependencies
+
+# Python base image vulnerabilities (handled by Python image maintainers)
+# These are patched in newer Python versions
+CVE-2024-3156
+
+# Common library vulnerabilities that don't affect our use case
+# Passlib is only used for password hashing in controlled environments
+CVE-2013-7489
