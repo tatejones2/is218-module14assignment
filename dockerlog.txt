@@ -1,0 +1,715 @@
+tatejones@Tate-NJIT-Server:~/is218finalproject/module14hosting$ docker compose -f docker-compose.prod.yml logs web
+WARN[0000] /home/tatejones/is218finalproject/module14hosting/docker-compose.prod.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | Traceback (most recent call last):
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+web-1  |     return _run_code(code, main_globals, None,
+web-1  |   File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+web-1  |     exec(code, run_globals)
+web-1  |   File "/app/app/database_init.py", line 1, in <module>
+web-1  |     from app.database import engine
+web-1  |   File "/app/app/database.py", line 5, in <module>
+web-1  |     from app.core.config import settings
+web-1  |   File "/app/app/core/config.py", line 29, in <module>
+web-1  |     settings = Settings()
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 171, in __init__
+web-1  |     super().__init__(
+web-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 214, in __init__
+web-1  |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+web-1  | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+web-1  | DB_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | DOMAIN
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tatejonesis218project3.com', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | CADDY_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_EMAIL
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='tnj@njit.edu', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden
+web-1  | PGADMIN_PASSWORD
+web-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='Chance0101', input_type=str]
+web-1  |     For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden

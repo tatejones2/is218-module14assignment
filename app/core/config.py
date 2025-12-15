@@ -1,6 +1,7 @@
 # app/config.py
 from functools import lru_cache
 from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
 from typing import Optional, List
 
 class Settings(BaseSettings):
@@ -21,9 +22,7 @@ class Settings(BaseSettings):
     # Redis (optional, for token blacklisting)
     REDIS_URL: Optional[str] = "redis://localhost:6379/0"
     
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = ConfigDict(extra="ignore")
 
 # Create a global settings instance
 settings = Settings()

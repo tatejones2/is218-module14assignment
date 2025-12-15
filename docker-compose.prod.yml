@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
     environment:
       PYTHONDONTWRITEBYTECODE: 1
       PYTHONUNBUFFERED: 1
@@ -50,8 +48,8 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    expose:
-      - "80"
+    ports:
+      - "5050:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
@@ -61,25 +59,6 @@ services:
     depends_on:
       - db
 
-  caddy:
-    image: caddy:2-alpine
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-    environment:
-      - DOMAIN=${DOMAIN}
-      - EMAIL=${CADDY_EMAIL}
-    networks:
-      - app-network
-    depends_on:
-      - web
-      - pgadmin
-
 volumes:
   postgres_data:
   caddy_data:
@@ -87,4 +66,3 @@ volumes:
 
 networks:
   app-network:
-    driver: bridge
