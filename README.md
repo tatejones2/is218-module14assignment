@@ -1,3 +1,100 @@
+# Calculator Application - Module 14 IS601
+
+A modern web-based calculator application built with FastAPI, PostgreSQL, and React-like frontend components.
+
+## Quick Start
+
+### Prerequisites
+- Docker and Docker Compose
+- Or: Python 3.10+, PostgreSQL 13+
+
+### Run the Application
+
+#### Option 1: Using Docker Compose (Recommended)
+```bash
+docker-compose up -d
+```
+The application will be available at **http://localhost:8000**
+
+#### Option 2: Run Locally
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+export DATABASE_URL="postgresql://user:password@localhost:5432/fastapi_db"
+
+# Run the app
+uvicorn app.main:app --reload
+```
+
+## Running Tests
+
+### Execute All Tests
+```bash
+pytest
+```
+
+### Run Specific Test Categories
+```bash
+# Unit tests
+pytest tests/unit/
+
+# Integration tests
+pytest tests/integration/
+
+# E2E tests
+pytest tests/e2e/
+
+# With coverage report
+pytest --cov=app tests/
+```
+
+## Docker Hub Repository
+
+Pre-built images are available on Docker Hub:
+- **Repository**: [tatejones2/601_module14](https://hub.docker.com/r/tatejones2/601_module14)
+- **Tags**: `latest`, commit SHA
+- **Pull**: `docker pull tatejones2/601_module14:latest`
+
+## Features
+
+- User authentication (registration, login, JWT tokens)
+- CRUD operations for calculations (Create, Read, Update, Delete)
+- Multiple calculation types: Addition, Subtraction, Multiplication, Division
+- Real-time input validation
+- Live preview on edit page
+- Responsive design
+- PostgreSQL database
+- Docker containerization
+
+## Project Structure
+
+```
+├── app/
+│   ├── main.py              # FastAPI application
+│   ├── database.py          # Database configuration
+│   ├── models/              # SQLAlchemy models
+│   ├── schemas/             # Pydantic schemas
+│   ├── auth/                # Authentication logic
+│   └── operations/          # Business logic
+├── templates/               # HTML templates
+├── static/                  # CSS, JavaScript
+├── tests/                   # Test suite
+├── docker-compose.yml       # Container orchestration
+└── requirements.txt         # Python dependencies
+```
+
+## Documentation
+
+Full setup and configuration instructions are available below:
+
+---
+
 # 📦 Project Setup
 
 ---
