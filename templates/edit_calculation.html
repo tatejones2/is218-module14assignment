@@ -231,12 +231,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const errorMessage = document.getElementById('errorMessage');
     errorMessage.textContent = message;
     
-    // Ensure element is fully visible
+    // Ensure element is fully visible - remove all display-hiding attributes
     errorAlert.classList.remove('hidden');
     errorAlert.classList.remove('opacity-0');
-    errorAlert.style.display = '';
-    errorAlert.style.visibility = 'visible';
-    errorAlert.style.opacity = '1';
+    errorAlert.setAttribute('style', 'display: block; visibility: visible; opacity: 1;');
     
     // Force a reflow to ensure the element is rendered
     void errorAlert.offsetHeight;
@@ -254,9 +252,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Ensure element is fully visible
     successAlert.classList.remove('hidden');
     successAlert.classList.remove('opacity-0');
-    successAlert.style.display = '';
-    successAlert.style.visibility = 'visible';
-    successAlert.style.opacity = '1';
+    successAlert.setAttribute('style', 'display: block; visibility: visible; opacity: 1;');
     
     // Force a reflow to ensure the element is rendered
     void successAlert.offsetHeight;

@@ -379,13 +379,14 @@ document.addEventListener('DOMContentLoaded', function() {
               throw new Error('Failed to delete calculation');
             }
             
-            showSuccess('Calculation deleted successfully');
             // Fade out the row before removing it
             const row = e.target.closest('tr');
             row.style.transition = 'opacity 0.5s';
             row.style.opacity = '0';
-            setTimeout(() => {
-              loadCalculations();
+            setTimeout(async () => {
+              await loadCalculations();
+              // Show success AFTER table is reloaded
+              showSuccess('Calculation deleted successfully');
             }, 500);
             
           } catch (err) {
@@ -499,11 +500,14 @@ document.addEventListener('DOMContentLoaded', function() {
       // Get the created calculation data
       const result = await response.json();
       
-      showSuccess(`Calculation complete: ${formatNumber(result.result)}`);
       form.reset();
       document.getElementById('inputValidationMessages').innerHTML = '';
       setInputFieldStatus(document.getElementById('calcInputs'));
-      loadCalculations();
+      
+      // Load calculations BEFORE showing success to ensure DOM is updated
+      await loadCalculations();
+      
+      showSuccess(`Calculation complete: ${formatNumber(result.result)}`);
       
       // Add a highlight effect to the table to draw attention to the new entry
       setTimeout(() => {
