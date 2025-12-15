@@ -2,6 +2,9 @@
 
 A modern web-based calculator application built with FastAPI, PostgreSQL, and React-like frontend components.
 
+**Repository**: [github.com/tatejones2/is218-module14assignment](https://github.com/tatejones2/is218-module14assignment)  
+**Docker Hub**: [hub.docker.com/r/tatejones2/601_module14](https://hub.docker.com/r/tatejones2/601_module14)
+
 ## Quick Start
 
 ### Prerequisites
